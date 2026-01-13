@@ -233,8 +233,6 @@ public class Swerve extends SubsystemBase {
         }
         
         //SmartDashboard.putNumberArray("Robot Pose", new Double[]{getPose().getX(), getPose().getY(), getPose().getRotation().getDegrees()});
-        
-        findClosestBranch(false);
         Logger.recordOutput("Robot Pose2d", getPose());
         Logger.recordOutput("Gyro angle", getGyroYaw().getDegrees());
         
