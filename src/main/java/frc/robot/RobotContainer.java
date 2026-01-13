@@ -1,5 +1,10 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -10,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.Vision.Camera;
+import frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +28,25 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
 
+     /* When viewed from behind the bot */ //OFFSETS NEED TO BE REDONE I HAVE NO CLUE WHAT BOT THESE ARE FROM
+    private final Camera leftFrontCam = new Camera(new PhotonCamera("Left_Forward"), 
+        new Transform3d(new Translation3d(0.206, 0.265, 0.208), //TODO re-do offsets
+        new Rotation3d(0, -1.08, 0.524)));
+        
+    private final Camera rightFrontCam = new Camera(new PhotonCamera("Right_Forward"), 
+        new Transform3d(new Translation3d(0.206, -0.265, 0.208), //TODO re-do offsets
+        new Rotation3d(0, -1.08, -0.524)));
+
+    private final Camera rightRearCam = new Camera(new PhotonCamera("Right_Rear"), 
+        new Transform3d(new Translation3d(-0.374, -0.262, 0.195), //TODO re-do offsets
+        new Rotation3d(0, 0, -3.88)));
+        
+    private final Camera leftRearCam = new Camera(new PhotonCamera("Left_Rear"), 
+        new Transform3d(new Translation3d(-0.374, 0.262, 0.195), //TODO re-do offsets
+        new Rotation3d(0, 0, 3.88)));
+
+    //private final Camera LLCam = new Camera(new PhotonCamera("LLCam"), new Transform3d(new Translation3d(0.135, 0, 0.204), new Rotation3d(0, -1.04, 0)));*/
+
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -31,7 +57,11 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    
+    private final VisionSubsystem s_VisionSubystem = new VisionSubsystem(
+            new Camera[]{rightFrontCam, leftFrontCam, rightRearCam, leftRearCam});
+
+    private final Swerve s_Swerve = new Swerve(s_VisionSubystem);
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */

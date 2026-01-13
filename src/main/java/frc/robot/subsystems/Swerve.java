@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
+import frc.lib.util.FlippingUtil;
 import frc.robot.Constants;
+import frc.robot.FieldLayout;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.apriltag.AprilTag;
@@ -114,7 +116,7 @@ public class Swerve extends SubsystemBase {
         );
     }
 
-    public void followTrajectory(SwerveSample sample) {
+     public void followTrajectory(SwerveSample sample) {
         // Get the current pose of the robot
         Pose2d pose = getPose();
 
@@ -131,6 +133,7 @@ public class Swerve extends SubsystemBase {
 
         Logger.recordOutput("Speeds given to Swerve to follow", speeds);
     }
+
 
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
